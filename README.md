@@ -43,6 +43,22 @@ What comes out the other end is a folder of finished, per-filter (and optionally
 - Your dataset organized by filter, as raw light frames (see [Dataset layout](#dataset-layout) below).
 - **Optional but recommended:** third-party Python processing scripts for background extraction, denoising, sharpening, star removal, and stretching (e.g. tools like `AutoBGE.py`, `GraXpert-AI.py`, `CosmicClarity_Native.py`, `Starless.py`, and similar). The wizard auto-detects these if they're installed and visible to Siril's script search paths — Siril's own built-in tools (`subsky`, `denoise`, `atrous`, `unsharp`, `rl`, `ght`, `autostretch`, and others) always work as a fallback if you don't have any installed.
 
+## Installing a third-party Python script into Siril
+
+The pipeline steps in Phase 3 and Phase 4 can use any third-party Python script (`AutoBGE.py`, `GraXpert-AI.py`, `CosmicClarity_Native.py`, `Starless.py`, and dozens of others) as long as Siril itself can find it. This wizard doesn't manage scripts on its own — it simply reads the same script locations Siril is already configured to search. So installing a script is a one-time Siril setup step, done entirely inside Siril itself:
+
+1. **Open Siril's Scripts preferences.** In Siril's menu, go to **Scripts ‣ Get Scripts** (or open **Preferences** — the gear/hamburger icon, or `Ctrl+P` — and select the **Scripts** tab). Either path lands you on the same screen.
+2. **Add a folder for your own scripts.** Under **Script Storage Directories**, click the **Add (+)** button and choose (or create) a folder to keep your third-party scripts in — for example `Documents/Siril Scripts`. Don't use Siril's own built-in scripts folder for this: the docs specifically warn that custom scripts placed there can be lost or corrupted when Siril updates.
+3. **Download the script into that folder.** Save the `.py` file you want (from GitHub, the author's site, or Siril's own in-app **Scripts ‣ Get Scripts** repository list further down the same screen, where official/community scripts can be added with a checkbox and **Apply**) into the folder you just added.
+4. **Rescan and apply.** Back in the Scripts preferences screen, click the **refresh icon** below the directories list so Siril picks up the new file, then click **Apply**.
+5. **Confirm it's there.** The script should now appear in Siril's **Scripts** menu, and this wizard will automatically detect it the next time you open (or re-check tools in) a pipeline step's tool list — no extra configuration needed on the wizard's side.
+6. **First run only:** if the script needs extra Python packages (numpy, astropy, etc.), Siril installs them automatically into its own managed Python environment the first time you run it. This can take a minute or two — just let it finish.
+
+A couple of things worth knowing:
+
+- A script placed in one of your own local folders takes priority over a repository script with the same name, so you can safely keep a locally-tweaked copy of a repository script.
+- Only install scripts from sources you trust — Siril doesn't verify or sandbox third-party scripts, and a script has the same access to your files and images that you do.
+
 ## Dataset layout
 
 Before running the wizard, your dataset should be organized with one subfolder per filter, each containing its raw light frames (and calibration frames, if you're using them):
